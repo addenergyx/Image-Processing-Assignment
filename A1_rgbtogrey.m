@@ -1,6 +1,5 @@
 %A1
-%file = uigetfile;
-hand = imread('images/flat.png');
+hand = imread('flat.png');
 greyScaleHand = rgb2gray(hand);
 
 figure;
