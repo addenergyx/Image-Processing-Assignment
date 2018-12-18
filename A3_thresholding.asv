@@ -54,6 +54,20 @@ imshow(redTipBinary);
 subplot(6,2,10); 
 imshow(redTipIsolated);
 
+greyScaleHand = rgb2gray(hand);
+im3 = greyScaleHand;
+c = cat(3, im3, im3, im3);
+
+imshow(c)
+
+d = imadd(c,orangeTipIsolated);
+d = imadd(c,redTipIsolated);
+d = imadd(c,blueTipIsolated);
+d = imadd(c,greenTipIsolated);
+d = imadd(c,yellowTip);
+imshow(d);
+
+
 
 
 

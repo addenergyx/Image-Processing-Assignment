@@ -1,0 +1,22 @@
+clear all;
+close all;
+clc;
+
+%A4
+hand = imread('flat.png');
+greyScaleHand = rgb2gray(hand);
+
+catGreyScale = cat(3, greyScaleHand, greyScaleHand, greyScaleHand);
+
+greyWithColouredTips = imadd(catGreyScale,orangeTipIsolated);
+greyWithColouredTips = imadd(greyWithColouredTips,redTipIsolated);
+greyWithColouredTips = imadd(greyWithColouredTips,blueTipIsolated);
+greyWithColouredTips = imadd(greyWithColouredTips,greenTipIsolated);
+greyWithColouredTips = imadd(greyWithColouredTips,yellowTipIsolated);
+imshow(greyWithColouredTips);
+
+for mm = 1:size(orangeTipBinary,1)
+    for nn = 1:size(orangeTipBinary,2)
+        if orangeTipBinary(mm,nn,1) == 1
+            i = i + 1;
+        end

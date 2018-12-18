@@ -1,3 +1,7 @@
+clear all;
+close all;
+clc;
+
 %A2
 hand = imread('flat.png');
 greyScaleHand = rgb2gray(hand);
