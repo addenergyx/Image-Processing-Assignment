@@ -3,15 +3,11 @@ close all;
 clc;
 
 %A2
-hand = imread('flat.png');
+hand = uigetfile();
+hand = imread(hand);
 greyScaleHand = rgb2gray(hand);
 
 greyScaleHandCount = imhist(greyScaleHand);
-
-%greyNorm = (greyScaleHandCount - min(greyScaleHandCount))/(max(greyScaleHandCount) - min(greyScaleHandCount));
-%[maxVal, maxIndex] = max(greyScaleHandCount);
-%[minVal, minIndex] = min(greyScaleHandCount);
-%meanG = uint8(mean(greyScaleHand(:)));
 
 handRed = hand(:,:,1);
 handGreen = hand(:,:,2);
@@ -49,5 +45,15 @@ xlim([0 255]);
 ylim([0 max(greyScaleHandCount)]);
 greyScaleHistYLength = get(gca,'YLim');
 line([greyScaleMean,greyScaleMean],greyScaleHistYLength,'Color','black','LineWidth', 1,'LineStyle','--');
+
+report = ['Max, Min and Arithmetic  Mean of the red channel is  ', num2str(max(handRed(:))), ', ' ,num2str(min(handRed(:))), ', ',num2str(round(redMean)), ' respectively'];
+disp(report);
+report = ['Max, Min and Arithmetic  Mean of the green channel is  ', num2str(max(handGreen(:))), ', ' ,num2str(min(handGreen(:))), ', ',num2str(round(greenMean)), ' respectively'];
+disp(report);
+report = ['Max, Min and Arithmetic  Mean of the blue channel is  ', num2str(max(handBlue(:))), ', ' ,num2str(min(handBlue(:))), ', ',num2str(round(blueMean)), ' respectively'];
+disp(report);
+report = ['Max, Min and Arithmetic  Mean of the greyscale image is  ', num2str(max(greyScaleHand(:))), ', ' ,num2str(min(greyScaleHand(:))), ', ',num2str(round(greyScaleMean)), ' respectively'];
+disp(report);
+
 
 

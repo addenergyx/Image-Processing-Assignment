@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 
-%B1
+%B2
 
 hand = uigetfile();
 hand = imread(hand);
@@ -95,6 +95,13 @@ if distance < 700
 else
     disp('Gesture is flat hand')
 end
+    
+     
+    
+    
+    
+    
+    
     
     
     

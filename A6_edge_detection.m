@@ -3,7 +3,8 @@ close all;
 clc;
 
 %A6
-hand = imread('flat.png');
+hand = uigetfile();
+hand = imread(hand);
 
 %RGB colourspace
 red = hand(:, :, 1); 
@@ -29,35 +30,29 @@ hsvSkinIsolated = hand;
 hsvSkinIsolated(repmat(~hsvSkinBinary,[1 1 3])) = 0;
 
 % ycbcr colourspace
-I = rgb2ycbcr(hand);
+ycbcrHand = rgb2ycbcr(hand);
 
-yMin = 29.000;
-yMax = 87.000;
-
-cbMin = 116.000;
-cbMax = 123.000;
-
-crMin = 136.000;
-crMax = 142.000;
-
-ycbcrThresholds = (I(:,:,1) >= yMin ) & (I(:,:,1) <= yMax) & ...
-    (I(:,:,2) >= cbMin ) & (I(:,:,2) <= cbMax) & ...
-    (I(:,:,3) >= crMin ) & (I(:,:,3) <= crMax);
+ycbcrThresholds = (ycbcrHand(:,:,1) >= 29 ) & (ycbcrHand(:,:,1) <= 87) & ...
+    (ycbcrHand(:,:,2) >= 116 ) & (ycbcrHand(:,:,2) <= 123) & ...
+    (ycbcrHand(:,:,3) >= 136 ) & (ycbcrHand(:,:,3) <= 142);
 ycbcrSkinBinary = ycbcrThresholds;
 
 maskedImage = hand;
 maskedImage(repmat(~ycbcrSkinBinary,[1 1 3])) = 0;
 
+% RGB IMAGE EDGE DETECTION
 handEdge = edge(skinBinary, 'canny');
 handPrewittEdge = edge(skinBinary, 'prewitt');
 handSobelEdge = edge(skinBinary, 'sobel');
 handRobertEdge = edge(skinBinary, 'roberts');
 
+% HSV IMAGE EDGE DETECTION
 hsvHandEdge = edge(hsvSkinBinary, 'canny');
 hsvHandPrewittEdge = edge(hsvSkinBinary, 'prewitt');
 hsvHandSobelEdge = edge(hsvSkinBinary, 'sobel');
 hsvHandRobertEdge = edge(hsvSkinBinary, 'roberts');
 
+% YCbCr IMAGE EDGE DETECTION
 ycbcrHandEdge = edge(ycbcrSkinBinary, 'canny');
 ycbcrHandPrewittEdge = edge(ycbcrSkinBinary, 'prewitt');
 ycbcrHandSobelEdge = edge(ycbcrSkinBinary, 'sobel');

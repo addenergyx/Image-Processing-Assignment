@@ -2,12 +2,12 @@ clear all;
 close all;
 clc;
 
-addpath('C:\Users\david\OneDrive\Documents\GitHub\Image-Processing-Assignment');  
-run('A4_cardinality') %run to get necessary variables
-close;
+%addpath('C:\Users\david\OneDrive\Documents\GitHub\Image-Processing-Assignment');  
+%run('A4_cardinality')
+%close;
 
 %A5
-[yOrange,xOrange] = find(orangeTipBinary);
+[yOrange,xOrange] = find(orangeTipBinary); %Returns coordinates of nonzero elements
 xOrangeMean = mean(xOrange);
 yOrangeMean = mean(yOrange);
 
@@ -62,18 +62,18 @@ report = ['Coordinate of Yellow average pixel is ', num2str(round(xYellowMean)),
 disp(report);
 report = ['Coordinate of Blue average pixel is ', num2str(round(xBlueMean)), ' ' ,num2str(round(yBlueMean)) ];
 disp(report)
-report = ['Coordinate of Greeen average pixel is ', num2str(round(xGreenMean)), ' ' ,num2str(round(yGreenMean)) ];
+report = ['Coordinate of Green average pixel is ', num2str(round(xGreenMean)), ' ' ,num2str(round(yGreenMean)) ];
 disp(report);
 report = ['Coordinate of Red average pixel is ', num2str(round(xRedMean)), ' ' ,num2str(round(yRedMean)) ];
 disp(report);
 disp(' ');
-report = ['Euclidean Distance between Orange and Yellow is', num2str(round(orange2YellowTip))];
+report = ['Euclidean Distance between Orange and Yellow is ', num2str(round(orange2YellowTip))];
 disp(report);
-report = ['Euclidean Distance between Yellow and Blue is', num2str(round(yellow2BlueTip))];
+report = ['Euclidean Distance between Yellow and Blue is ', num2str(round(yellow2BlueTip))];
 disp(report);
-report = ['Euclidean Distance between Blue and Green is', num2str(round(blue2GreenTip))];
+report = ['Euclidean Distance between Blue and Green is ', num2str(round(blue2GreenTip))];
 disp(report);
-report = ['Euclidean Distance between Green and Red is', num2str(round(green2RedTip))];
+report = ['Euclidean Distance between Green and Red is ', num2str(round(green2RedTip))];
 disp(report);
 
 

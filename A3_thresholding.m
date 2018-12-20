@@ -3,7 +3,8 @@ close all;
 clc;
 
 %A3
-hand = imread('flat.png');
+hand = uigetfile();
+hand = imread(hand);
 %imtool(hand); %used to help find thresholds
 
 red = hand(:, :, 1); 
