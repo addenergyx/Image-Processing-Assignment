@@ -2,6 +2,10 @@ clear all;
 close all;
 clc;
 
+addpath('C:\Users\david\OneDrive\Documents\GitHub\Image-Processing-Assignment');  
+run('A3_thresholding') %run to get necessary variables
+close;
+
 %A4
 hand = imread('flat.png');
 greyScaleHand = rgb2gray(hand);

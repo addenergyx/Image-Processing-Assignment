@@ -66,14 +66,13 @@ report = ['Coordinate of Greeen average pixel is ', num2str(round(xGreenMean)), 
 disp(report);
 report = ['Coordinate of Red average pixel is ', num2str(round(xRedMean)), ' ' ,num2str(round(yRedMean)) ];
 disp(report);
-disp(' ');
 report = ['Euclidean Distance between Orange and Yellow is', num2str(round(orange2YellowTip))];
 disp(report);
 report = ['Euclidean Distance between Yellow and Blue is', num2str(round(yellow2BlueTip))];
 disp(report);
-report = ['Euclidean Distance between Blue and Green is', num2str(round(blue2GreenTip))];
+report = ['Euclidean Distance between Green and Blue is', num2str(round(orange2YellowTip))];
 disp(report);
-report = ['Euclidean Distance between Green and Red is', num2str(round(green2RedTip))];
+report = ['Euclidean Distance between Blue and Red is', num2str(round(orange2YellowTip))];
 disp(report);
 
 

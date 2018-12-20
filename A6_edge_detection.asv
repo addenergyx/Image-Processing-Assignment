@@ -1,0 +1,154 @@
+clear all;
+close all;
+clc;
+
+%A6
+hand = imread('flat.png');
+
+%RGB colourspace
+red = hand(:, :, 1); 
+green = hand(:, :, 2); 
+blue = hand(:, :, 3); 
+
+% mask
+skinBinary = red > 35 & red < 120 & green > 20 & green < 90 & blue < 70; 
+
+skinIsolated = hand; 
+skinIsolated(repmat(~skinBinary,[1 1 3])) = 0; 
+
+%HSV colourspace
+hsvHand = rgb2hsv(hand);
+
+hueMin = 0.039;
+hueMax = 0.080;
+
+saturationMin = 0.410;
+saturationMin = 0.631;
+
+valueMin = 0.000;
+valueMax = 0.497;
+
+% mask
+thresholds = (hsvHand(:,:,1) >= hueMin ) & (hsvHand(:,:,1) <= hueMax) & ...
+    (hsvHand(:,:,2) >= saturationMin ) & (hsvHand(:,:,2) <= saturationMin) & ...
+    (hsvHand(:,:,3) >= valueMin ) & (hsvHand(:,:,3) <= valueMax);
+hsvSkinBinary = thresholds;
+
+hsvSkinIsolated = hand;
+hsvSkinIsolated(repmat(~hsvSkinBinary,[1 1 3])) = 0;
+
+hsvHandEdge = edge(hsvSkinBinary, 'canny');
+hsvHandPrewittEdge = edge(hsvSkinBinary, 'prewitt');
+hsvHandSobelEdge = edge(hsvSkinBinary, 'sobel');
+hsvHandRobertEdge = edge(hsvSkinBinary, 'roberts');
+
+handEdge = edge(skinBinary, 'canny');
+handPrewittEdge = edge(skinBinary, 'prewitt');
+handSobelEdge = edge(skinBinary, 'sobel');
+handRobertEdge = edge(skinBinary, 'roberts');
+
+% ycbcr colourspace
+I = rgb2ycbcr(hand);
+
+yMin = 29.000;
+yMax = 87.000;
+
+cbMin = 116.000;
+cbMax = 123.000;
+
+crMin = 136.000;
+crMax = 142.000;
+
+ycbcrThresholds = (I(:,:,1) >= yMin ) & (I(:,:,1) <= yMax) & ...
+    (I(:,:,2) >= cbMin ) & (I(:,:,2) <= cbMax) & ...
+    (I(:,:,3) >= crMin ) & (I(:,:,3) <= crMax);
+ycbcrSkinBinary = ycbcrThresholds;
+
+maskedImage = hand;
+
+maskedImage(repmat(~ycbcrSkinBinary,[1 1 3])) = 0;
+
+ycbcrHandEdge = edge(ycbcrSkinBinary, 'canny');
+ycbcrHandPrewittEdge = edge(ycbcrSkinBinary, 'prewitt');
+ycbcrHandSobelEdge = edge(ycbcrSkinBinary, 'sobel');
+ycbcrHandRobertEdge = edge(ycbcrSkinBinary, 'roberts');
+
+figure;
+subplot(2,2,1);
+imshow(hsvHandPrewittEdge);colormap gray;axis image;title('Prewitt'); 
+subplot(2,2,2);
+imshow(hsvHandRobertEdge);colormap gray;axis image;title('Roberts'); 
+subplot(2,2,3);
+imshow(hsvHandSobelEdge);colormap gray;axis image;title('Sobel'); 
+subplot(2,2,4);
+imshow(hsvHandEdge);colormap gray;axis image;title('Canny'); 
+
+figure;
+subplot(2,2,1);
+imshow(handPrewittEdge);colormap gray;axis image;title('Prewitt'); 
+subplot(2,2,2);
+imshow(handRobertEdge);colormap gray;axis image;title('Roberts'); 
+subplot(2,2,3);
+imshow(handSobelEdge);colormap gray;axis image;title('Sobel'); 
+subplot(2,2,4);
+imshow(handEdge);colormap gray;axis image;title('Canny'); 
+
+figure;
+subplot(2,2,1);
+imshow(ycbcrHandPrewittEdge);colormap gray;axis image;title('Prewitt'); 
+subplot(2,2,2);
+imshow(ycbcrHandRobertEdge);colormap gray;axis image;title('Roberts'); 
+subplot(2,2,3);
+imshow(ycbcrHandSobelEdge);colormap gray;axis image;title('Sobel'); 
+subplot(2,2,4);
+imshow(ycbcrHandEdge);colormap gray;axis image;title('Canny'); 
+
+
+lineStructure = strel('line',11,90); %red outine
+
+prewittEdgeContour = imdilate((reshape(uint8([255 0 0]),[1,1,3]) .* uint8(ycbcrHandPrewittEdge)),lineStructure);
+robertsEdgeContour = imdilate((reshape(uint8([255 0 0]),[1,1,3]) .* uint8(ycbcrHandRobertEdge)),lineStructure);
+sobelEdgeContour = imdilate((reshape(uint8([255 0 0]),[1,1,3]) .* uint8(ycbcrHandSobelEdge)),lineStructure);
+cannyEdgeContour = imdilate((reshape(uint8([255 0 0]),[1,1,3]) .* uint8(ycbcrHandEdge)),lineStructure);
+
+figure;
+subplot(2,2,1);
+imshow(hand+prewittEdgeContour);colormap gray;axis image;title('Prewitt'); 
+subplot(2,2,2);
+imshow(hand+robertsEdgeContour);colormap gray;axis image;title('Roberts'); 
+subplot(2,2,3);
+imshow(hand+sobelEdgeContour);colormap gray;axis image;title('Sobel'); 
+subplot(2,2,4);
+imshow(hand+cannyEdgeContour);colormap gray;axis image;title('Canny'); 
+
+
+
+
+
+
+% catGreyScale2 = cat(3, maskedSkin, maskedSkin, maskedSkin);
+% RGBandEdgeThreshold = imadd(catGreyScale2,RGB);
+% figure;
+% imshow(RGBandEdgeThreshold);
+% hold on; 
+% visboundaries();
+
+% imshow(handEdge);
+% imshow(handPrewittEdge);
+% imshow(handSobelEdge);
+% imshow(handRobertEdge);
+%imshowpair(handEdge,handPrewittEdge,'montage');
+%imshowpair(handSobelEdge,handRobertEdge,'montage');
+
+%ee = cat(3, handEdge, handEdge, handEdge);
+%aaa = imadd(hand, ee);
+%imshow(aaa);
+
+% figure;
+% subplot(2,2,1);
+% imshow(skinBinary);colormap gray;axis image;title('i. Binary Masks'); 
+% subplot(2,2,2); 
+% imshow(skinIsolated);colormap gray;axis image;title('ii. Isolated Pixels');
+
+
+
