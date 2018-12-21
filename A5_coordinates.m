@@ -2,30 +2,17 @@ clear all;
 close all;
 clc;
 
-%addpath('C:\Users\david\OneDrive\Documents\GitHub\Image-Processing-Assignment');  
-%run('A4_cardinality')
-%close;
+addpath('C:\Users\david\OneDrive\Documents\GitHub\Image-Processing-Assignment');  
+run('A4_cardinality')
+close;
 
 %A5
-[yOrange,xOrange] = find(orangeTipBinary); %Returns coordinates of nonzero elements
-xOrangeMean = mean(xOrange);
-yOrangeMean = mean(yOrange);
 
-[yblue,xblue] = find(blueTipBinary);
-xBlueMean = mean(xblue);
-yBlueMean = mean(yblue);
-
-[ygreen,xgreen] = find(greenTipBinary);
-xGreenMean = mean(xgreen);
-yGreenMean = mean(ygreen);
-
-[yYellow,xYellow] = find(yellowTipBinary);
-xYellowMean = mean(xYellow);
-yYellowMean = mean(yYellow);
-
-[yRed,xRed] = find(redTipBinary);
-xRedMean = mean(xRed);
-yRedMean = mean(yRed);
+[yOrangeMean,xOrangeMean] = findCentralCoordinate(orangeTipBinary);
+[yBlueMean,xBlueMean] = findCentralCoordinate(blueTipBinary);
+[yGreenMean,xGreenMean] = findCentralCoordinate(greenTipBinary);
+[yYellowMean,xYellowMean] = findCentralCoordinate(yellowTipBinary);
+[yRedMean,xRedMean] = findCentralCoordinate(redTipBinary);
 
 imshow (greyWithColouredTips)
 hold on;
@@ -76,5 +63,8 @@ disp(report);
 report = ['Euclidean Distance between Green and Red is ', num2str(round(green2RedTip))];
 disp(report);
 
-
-
+function [yMean, xMean] = findCentralCoordinate(binaryImage)
+    [yCoordinates,xCoordinates] = find(binaryImage); %Returns coordinates of nonzero elements
+    xMean = mean(xCoordinates);
+    yMean = mean(yCoordinates);
+end

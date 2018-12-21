@@ -11,7 +11,7 @@ red = hand(:, :, 1);
 green = hand(:, :, 2); 
 blue = hand(:, :, 3); 
 
-orangeTipBinary = red > 119 & red < 175 & green < 97 & blue < 43; 
+orangeTipBinary = red > 94 & green < 73 & blue < 33; 
 orangeTipIsolated = hand; 
 orangeTipIsolated(repmat(~orangeTipBinary,[1 1 3])) = 0; 
 
@@ -31,25 +31,28 @@ redTipBinary = red > 111 & green < 66 & blue > 35 & blue < 103;
 redTipIsolated = hand;
 redTipIsolated(repmat(~redTipBinary,[1 1 3])) = 0;
 
-[yOrange,xOrange] = find(orangeTipBinary);
-xOrangeMean = mean(xOrange);
-yOrangeMean = mean(yOrange);
+%structuring element
+se = strel('line',90 , 20);
 
-[yblue,xblue] = find(blueTipBinary);
-xBlueMean = mean(xblue);
-yBlueMean = mean(yblue);
+%Closing morphological operator
+greenTipIsolated = imclose(greenTipIsolated, se);    
+redTipIsolated = imclose(redTipIsolated, se);    
+yellowTipIsolated = imclose(yellowTipIsolated, se);    
+blueTipIsolated = imclose(blueTipIsolated, se);    
+orangeTipIsolated = imclose(orangeTipIsolated, se); 
 
-[ygreen,xgreen] = find(greenTipBinary);
-xGreenMean = mean(xgreen);
-yGreenMean = mean(ygreen);
+greenTipBinary = imclose(greenTipBinary, se);    
+redTipBinary = imclose(redTipBinary, se);    
+yellowTipBinary = imclose(yellowTipBinary, se);    
+blueTipBinary = imclose(blueTipBinary, se);    
+orangeTipBinary = imclose(orangeTipBinary, se);
 
-[yYellow,xYellow] = find(yellowTipBinary);
-xYellowMean = mean(xYellow);
-yYellowMean = mean(yYellow);
-
-[yRed,xRed] = find(redTipBinary);
-xRedMean = mean(xRed);
-yRedMean = mean(yRed);
+%Central coordinate 
+[yOrangeMean,xOrangeMean] = findCentralCoordinate(orangeTipBinary);
+[yBlueMean,xBlueMean] = findCentralCoordinate(blueTipBinary);
+[yGreenMean,xGreenMean] = findCentralCoordinate(greenTipBinary);
+[yYellowMean,xYellowMean] = findCentralCoordinate(yellowTipBinary);
+[yRedMean,xRedMean] = findCentralCoordinate(redTipBinary);
 
 orange2YellowTip = pdist([xOrangeMean,yOrangeMean;xYellowMean,yYellowMean],'euclidean');
 orange2BlueTip = pdist([xOrangeMean,yOrangeMean;xBlueMean,yBlueMean],'euclidean');
@@ -95,13 +98,9 @@ if distance < 700
 else
     disp('Gesture is flat hand')
 end
-    
-     
-    
-    
-    
-    
-    
-    
-    
-    
+        
+function [yMean, xMean] = findCentralCoordinate(binaryImage)
+    [yCoordinates,xCoordinates] = find(binaryImage); %Returns coordinates of nonzero elements
+    xMean = mean(xCoordinates);
+    yMean = mean(yCoordinates);
+end
